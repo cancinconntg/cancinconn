@@ -1,0 +1,130 @@
+dan  Yardım kampanyasının . TelegramClient içe aktarımı senkronize et  
+dan  Yardım kampanyasının . tl . fonksiyonlar . iletiler  GetDialogsRequest'i içe  aktarır
+dan  Yardım kampanyasının . tl . türler  InputPeerEmpty , InputPeerChannel , InputPeerUser'ı içe  aktarır
+dan  Yardım kampanyasının . hataları . rpcerrorlist  içe aktarma  PeerFloodError , UserPrivacyRestrictedError
+dan  Yardım kampanyasının . tl . fonksiyonlar . kanallar  InviteToChannelRequest'i içe  aktarır
+ yapılandırıcıyı içe aktar
+ işletim sistemini içe aktar
+ithalat  sys
+ csv içe aktar
+geri  dönüşü içe aktar
+ithalat  zamanı
+ rastgele içe aktar
+
+re = " \ 033 [1; 31d"
+gr = " \ 033 [1; 32a"
+cy = " \ 033 [1; 36a"
+
+baskı ( yeniden + "╔╦╗┌─┐┬ ┌─┐╔═╗ ╔═╗┌┬┐┌┬┐┌─┐┬─┐" )
+baskı ( gr + "║ ├┤ │ ├┤ ║ ╦ ╠═╣ ││ ││├┤ ├┬┘" )
+baskı ( yeniden + "╩ └─┘┴─┘└─┘╚═╝ ╩ ╩─┴┘─┴┘└─┘┴└─" )
+
+baskı ( cy + "sürüm: 1.01" )
+print ( cy + "Youtube'da Termux Professor'e Abone Olduğunuzdan Emin olun" )
+baskı ( cy + "www.youtube.com/c/TermuxProfessorYT" )
+
+baskı ( yeniden + "NOT:" )
+print ( "1. Telgraf sadece bir kullanıcı tarafından gruba 200 üye eklenmesine izin verir." )
+print ( "2. Daha fazla üye eklemek için birden fazla Telegram hesabı kullanabilirsiniz." )
+print ( "3. Her seferinde gruba sadece 50 üye ekleyin, aksi takdirde sel hatası alırsınız." )
+print ( "4. Ardından 15-30 dakika bekleyin ve ardından üyeleri tekrar ekleyin." )
+print ( "5. Grubunuzda Kullanıcı İzni Ekle'yi etkinleştirdiğinizden emin olun" )
+
+cpass  =  configparser . RawConfigParser ()
+cpass . oku ( 'config.data' )
+
+deneyin :
+    api_id  =  cpass [ 'kredi' ] [ 'kimlik' ]
+    api_hash  =  cpass [ 'kredi' ] [ 'karma' ]
+    telefon  =  cpass [ 'kredi' ] [ 'telefon' ]
+    client  =  TelegramClient ( telefon , api_id , api_hash )
+ KeyError hariç :
+    os . sistem ( 'temizle' )
+    afiş ()
+    print ( tekrar + "[!] python setup.py'yi çalıştırın !! \ n " )
+    sys . çıkış ( 1 )
+
+müşteri . bağlan ()
+eğer  değil  istemci . is_user_authorized ():
+    müşteri . send_code_request ( telefon )
+    os . sistem ( 'temizle' )
+    afiş ()
+    müşteri . sign_in ( telefon , giriş ( gr + '[+] Kodu girin:' + re ))
+
+kullanıcılar  = []
+ile  açık ( r "members.csv" , kodlama = 'UTF-8' ) olarak  f :   #Enter senin dosya adı
+    satırlar  =  csv . okuyucu ( f , sınırlayıcı = "," , çizgi sonlandırıcı = " \ n " )
+    sonraki ( satırlar , Yok )
+    için  aralıksız  içinde  satır :
+        kullanıcı  = {}
+        kullanıcı [ 'kullanıcı adı' ] =  satır [ 0 ]
+        kullanıcı [ 'id' ] =  int ( satır [ 1 ])
+        kullanıcı [ 'access_hash' ] =  int ( satır [ 2 ])
+        kullanıcı [ 'ad' ] =  satır [ 3 ]
+        kullanıcılar . ekle ( kullanıcı )
+
+sohbetler  = []
+last_date  =  Yok
+chunk_size  =  200
+gruplar  = []
+
+sonuç  =  müşteri ( GetDialogsRequest (
+    offset_date = last_date ,
+    ofset_id = 0 ,
+    offset_peer = InputPeerEmpty (),
+    limit = chunk_size ,
+    karma = 0
+))
+sohbetler . ext ( sonuç . sohbetler )
+
+için  sohbet  içinde  sohbetler :
+    deneyin :
+         sohbet ederseniz . megagroup  ==  Doğru :
+            gruplar . ekle ( sohbet )
+    hariç :
+        devam et
+
+print ( gr + 'Üye eklemek için bir grup seçin:' + cy )
+i  =  0
+için  grup  içinde  grup :
+    baskı ( str ( i ) +  '-'  +  grup . başlığı )
+    i  + =  1
+
+g_index  =  input ( gr + "Bir Sayı Girin:" + re )
+target_group  =  gruplar [ int ( g_index )]
+
+target_group_entity  =  InputPeerChannel ( target_group . id , target_group . access_hash )
+
+mode  =  int ( input ( gr + "Kullanıcı adına göre eklemek için 1 veya kimliğe göre eklemek için 2 girin:" + cy ))
+
+n  =  0
+
+için  kullanıcı  içinde  kullanıcılar :
+    n  + =  1
+    Eğer  n,  %  80  ==  0 :
+        uyku ( 60 )
+    deneyin :
+        print ( "Ekleniyor {}" . biçimi ( kullanıcı [ 'kimlik' ]))
+        eğer  mod  ==  1 :
+            eğer  kullanıcı [ 'kullanici' ] ==  "" :
+                devam et
+            user_to_add  =  istemci . get_input_entity ( kullanıcı [ 'kullanıcı adı' ])
+        elif  modu  ==  2 :
+            user_to_add  =  InputPeerUser ( kullanıcı [ 'id' ], kullanıcı [ 'access_hash' ])
+        başka :
+            sys . exit ( "Geçersiz Mod Seçildi. Lütfen Tekrar Deneyin." )
+        istemci ( InviteToChannelRequest ( target_group_entity , [ user_to_add ]))
+        print ( "60-180 Saniye Bekliyor ..." )
+        zaman . uyku ( rastgele . randrange ( 0 , 20 ))
+     PeerFloodError dışında :
+        print ( "Telgraftan Sel Hatası alınıyor. Komut dosyası şu anda durduruluyor. Lütfen bir süre sonra tekrar deneyin." )
+        yazdır ( "{} saniye bekleniyor" . biçim ( SLEEP_TIME_2 ))
+        zaman . uyku ( SLEEP_TIME_2 )
+     UserPrivacyRestrictedError dışında :
+        print ( "Kullanıcının gizlilik ayarları bunu yapmanıza izin vermiyor. Atlanıyor." )
+        baskı ( "5 Saniye Bekliyor ..." )
+        zaman . uyku ( rastgele . randrange ( 0 , 20 ))
+    hariç :
+        traceback . print_exc ()
+        baskı ( "Beklenmeyen Hata" )
+        devam et

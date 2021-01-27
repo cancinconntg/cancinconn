@@ -1,0 +1,44 @@
+#! / bin / env python3
+# kodu: Termux Profesörü
+
+"" "
+setup.py'yi yeniden çalıştırabilirsiniz 
+eğer yanlış bir değer kattıysan
+"" "
+ os , sys içe aktar
+ yapılandırıcıyı içe aktar
+re = " \ 033 [1; 31d"
+gr = " \ 033 [1; 32a"
+cy = " \ 033 [1; 36a"
+def  başlık ():
+	os . sistem ( 'temizle' )
+	baskı ( f "" "
+	{ re } ╔═╗ { cy } ┌─┐┌┬┐┬ ┬┌─┐
+	{ re } ╚═╗ { cy } ├┤ │ │ │├─┘
+	{ re } ╚═╝ { cy } └─┘ ┴ └─┘┴
+	
+	           Sürüm: 1.01
+	{ re } Youtube'da Termux Professor'e abone olun
+	{ cy } www.youtube.com/c/TermuxProfessorYT
+	"" " )
+afiş ()
+print ( gr + "[+] Gereksinimler yükleniyor ..." )
+os . system ( 'python3 -m pip kurulum telethon' )
+os . system ( 'pip3 telethon yükle' )
+afiş ()
+os . sistem ( "config.data'ya dokunun" )
+cpass  =  configparser . RawConfigParser ()
+cpass . add_section ( 'kredi' )
+xid  =  girdi ( gr + "[+] api kimliğini girin:" + yeniden )
+cpass . set ( 'kredi' , 'kimlik' , xid )
+xhash  =  input ( gr + "[+] karma kimliği girin:" + yeniden )
+cpass . set ( 'kredi' , 'karma' , xhash )
+xphone  =  giriş ( gr + "[+] telefon numarasını girin:" + yeniden )
+cpass . set ( 'kredi' , 'telefon' , xphone )
+setup  =  open ( 'config.data' , 'w' )
+cpass . yaz ( kurulum )
+kurulum . kapat ()
+print ( gr + "[+] kurulum tamamlandı!" )
+print ( gr + "[+] artık herhangi bir aracı çalıştırabilirsiniz!" )
+yazdır ( gr + "[+] docs 4 kurulum ve api kurulumunu okuduğunuzdan emin olun" )
+baskı ( gr + "[+] https://github.com/termuxprofessor/TeleGram-Scraper-Adder/blob/master/README.md" )
